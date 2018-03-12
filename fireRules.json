@@ -3,23 +3,23 @@
     ".read": "true",
     ".write": "true",
     "businesses": {
-            "$business": {
-              "name": {
-                ".validate": "newData.isString() && newData.val().length < 50"
-              },
-              "number": {
-                ".validate": "newData.isString() && newData.val().length < 50"
-              },
-              "primaryBusiness": {
-                ".validate": "newData.isString() && newData.val().length < 50"
-              },
-              "address": {
-                ".validate": "newData.isString() && newData.val().length < 50"
-              },
-              "province": {
-                ".validate": "newData.isString() && newData.val().length < 50"
-              }
-            }
+      "$business": {
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 48 && newData.val().length >= 2"
+        },
+        "number": {
+          ".validate": "newData.isString() && newData.val().length == 9"
+        },
+        "primaryBusiness": {
+          ".validate": "newData.val().matches(/Fisher|Distributor|Processor|Fish Monger/)"
+        },
+        "address": {
+          ".validate": "newData.isString() && newData.val().length < 50"
+        },
+        "provinceTerritory": {
+          ".validate": "newData.val().matches(/AB|BC|MB|NB|NL|NS|NT|NU|ON|PE|QC|SK|YT/) || newData.val().length == 0"
         }
+      }
+    }
   }
 }

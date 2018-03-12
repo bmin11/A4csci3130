@@ -26,8 +26,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp" />
 
-    <EditText
-        android:id="@+id/etPrimaryBusiness"
+    <Spinner
+        android:id="@+id/spiPrimaryBusiness"
         android:layout_width="395dp"
         android:layout_height="wrap_content"
         android:hint="@string/primaryBusiness"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/address"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/etPrimaryBusiness"
+        app:layout_constraintTop_toBottomOf="@+id/spiPrimaryBusiness"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp" />
 

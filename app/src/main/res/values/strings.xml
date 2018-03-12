@@ -16,4 +16,13 @@
     <string name="primaryBusiness">Primary Business</string>
     <string name="address">Address</string>
     <string name="province">Province</string>
+
+    <!-- Spinner -->
+    <string-array name="primary_business_array">
+        <item>Fisher</item>
+        <item>Distributor</item>
+        <item>Processor</item>
+        <item>Fish Monger</item>
+    </string-array>
+
 </resources>
