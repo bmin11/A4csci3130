@@ -2,8 +2,8 @@
   "rules": {
     ".read": "true",
     ".write": "true",
-    "contacts": {
-            "$contact": {
+    "business": {
+            "$business": {
                 "name": {
                     ".validate": "newData.isString() && newData.val().length < 50"
                 },
