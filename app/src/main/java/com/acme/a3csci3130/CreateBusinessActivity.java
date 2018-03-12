@@ -1,24 +1,21 @@
 package com.acme.a3csci3130;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
-public class DetailViewActivity extends Activity {
+public class CreateBusinessActivity extends Activity {
 
     private EditText etName, etNumber, etPrimaryBusiness, etAddress, etProvince;
-    Business receivedBusinessInfo;
     private MyApplicationData appState;
-    private String mUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_view);
-        receivedBusinessInfo = (Business)getIntent().getSerializableExtra("Business");
-
+        setContentView(R.layout.activity_create_contact_acitivity);
+        //Get the app wide shared variables
         appState = ((MyApplicationData) getApplicationContext());
 
         etName = (EditText) findViewById(R.id.etName);
@@ -26,19 +23,11 @@ public class DetailViewActivity extends Activity {
         etPrimaryBusiness = (EditText) findViewById(R.id.etPrimaryBusiness);
         etAddress = (EditText) findViewById(R.id.etAddress);
         etProvince = (EditText) findViewById(R.id.etProvince);
-
-        if(receivedBusinessInfo != null){
-            etName.setText(receivedBusinessInfo.name);
-            etNumber.setText(receivedBusinessInfo.number);
-            etPrimaryBusiness.setText(receivedBusinessInfo.primaryBusiness);
-            etAddress.setText(receivedBusinessInfo.address);
-            etProvince.setText(receivedBusinessInfo.province);
-            mUid = receivedBusinessInfo.uid;
-        }
     }
 
-    public void updateContact(View v){
-        String uid = mUid;
+    public void submitInfoButton(View v) {
+        //each entry needs a unique ID
+        String uid = appState.firebaseReference.push().getKey();
         String name = etName.getText().toString();
         String number = etNumber.getText().toString();
         String primaryBusiness = etPrimaryBusiness.getText().toString();
@@ -48,14 +37,7 @@ public class DetailViewActivity extends Activity {
 
         appState.firebaseReference.child(uid).setValue(business);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+        finish();
 
-    public void eraseContact(View v)
-    {
-        appState.firebaseReference.child(mUid).setValue(null);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 }
