@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+/**
+ * Activity for editing or deleting business entry
+ */
 public class DetailViewActivity extends Activity {
 
     private EditText etName, etNumber, etAddress, etProvince;
@@ -36,6 +39,7 @@ public class DetailViewActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiPrimaryBusiness.setAdapter(adapter);
 
+        //If a business object was passed down by intent from the main activity, populate all fields with given info
         if(receivedBusinessInfo != null){
             etName.setText(receivedBusinessInfo.name);
             etNumber.setText(receivedBusinessInfo.number);
@@ -44,11 +48,16 @@ public class DetailViewActivity extends Activity {
 
             mUid = receivedBusinessInfo.uid;
 
-            int pbID = adapter.getPosition(receivedBusinessInfo.primaryBusiness);
-            spiPrimaryBusiness.setSelection(pbID);
+            spiPrimaryBusiness.setSelection(adapter.getPosition(receivedBusinessInfo.primaryBusiness));
         }
     }
 
+    /**
+     * Called on click listener for button btSubmit
+     * Takes string value from each text views and create a new Business object to post it to the firebase
+     * Return back to main activity at the end of the method
+     * @param v
+     */
     public void updateContact(View v){
         String uid = mUid;
         String name = etName.getText().toString();
@@ -64,6 +73,12 @@ public class DetailViewActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * Called on click listener for button btDelete
+     * Set the value to null at the given id
+     * Return back to main activity at the end of the method
+     * @param v
+     */
     public void eraseContact(View v)
     {
         appState.firebaseReference.child(mUid).setValue(null);

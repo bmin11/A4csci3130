@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+/**
+ * Acticity for Business Creation activity
+ */
 public class CreateBusinessActivity extends Activity {
 
     private EditText etName, etNumber, etAddress, etProvince;
@@ -27,12 +30,19 @@ public class CreateBusinessActivity extends Activity {
         etProvince = (EditText) findViewById(R.id.etProvince);
 
         spiPrimaryBusiness = (Spinner) findViewById(R.id.spiPrimaryBusiness);
+        //takes the array of string to add it on the spinner menue
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.primary_business_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiPrimaryBusiness.setAdapter(adapter);
     }
 
+    /**
+     * Called on click listener for button btSubmit
+     * Takes string value from each text views and create a new Business object to post it to the firebase
+     * Ends activity after the post
+     * @param v
+     */
     public void submitInfoButton(View v) {
         //each entry needs a unique ID
         String uid = appState.firebaseReference.push().getKey();
