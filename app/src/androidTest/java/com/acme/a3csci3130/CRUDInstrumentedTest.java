@@ -37,9 +37,6 @@ import static org.junit.Assert.assertEquals;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CRUDInstrumentedTest {
 
-    private int[] counts = new int[1];
-    private int[] compareCounts = new int[1];
-
     @Rule
     public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<MainActivity>(MainActivity.class);
 
@@ -59,21 +56,8 @@ public class CRUDInstrumentedTest {
         Thread.sleep(2000);
 
         //Get the initial length of the list view
-        onView(withId(R.id.lvList)).check(matches(new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                ListView listView = (ListView) view;
-
-                counts[0] = listView.getCount();
-
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        }));
+        final int[] listCountBeforeCreate = new int[1];
+        getListLength(listCountBeforeCreate);
 
         onView(withId(R.id.btSubmit))
                 .perform(click());
@@ -94,25 +78,12 @@ public class CRUDInstrumentedTest {
 
 
         //get the new length of the list view
-        onView(withId(R.id.lvList)).check(matches(new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                ListView listView = (ListView) view;
-
-                compareCounts[0] = listView.getCount();
-
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        }));
+        final int[] listCountAfterCreate = new int[1];
+        getListLength(listCountAfterCreate);
 
 
         //Test if the number of items for the list view has increased by 1 due to new business
-        assertEquals(counts[0]+1, compareCounts[0]);
+        assertEquals(listCountBeforeCreate[0]+1, listCountAfterCreate[0]);
     }
 
     /**
@@ -124,24 +95,11 @@ public class CRUDInstrumentedTest {
         String name = "Test Update";
 
         //get the length of the list view
-        onView(withId(R.id.lvList)).check(matches(new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                ListView listView = (ListView) view;
-
-                counts[0] = listView.getCount();
-
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        }));
+        final int[] listCount = new int[1];
+        getListLength(listCount);
 
         //click on the last item, which would be the one created during testCreate()
-        onData(anything()).inAdapterView(withId(R.id.lvList)).atPosition(counts[0]-1).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvList)).atPosition(listCount[0]-1).perform(click());
 
         intended(hasComponent(DetailViewActivity.class.getName()));
 
@@ -162,25 +120,12 @@ public class CRUDInstrumentedTest {
     @Test
     public void testzDelete() throws Exception {
 
-        //get the initial length of the list view
-        onView(withId(R.id.lvList)).check(matches(new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                ListView listView = (ListView) view;
-
-                counts[0] = listView.getCount();
-
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        }));
+        //Get the initial length of the list view
+        final int[] listCountBeforeDelete = new int[1];
+        getListLength(listCountBeforeDelete);
 
         //click on the last item, which would be the one created during testCreate()
-        onData(anything()).inAdapterView(withId(R.id.lvList)).atPosition(counts[0]-1).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvList)).atPosition(listCountBeforeDelete[0]-1).perform(click());
 
         intended(hasComponent(DetailViewActivity.class.getName()));
 
@@ -188,12 +133,20 @@ public class CRUDInstrumentedTest {
                 .perform(click());
 
         //get the new length of the list view
+        final int[] listCountAfterDelete = new int[1];
+        getListLength(listCountAfterDelete);
+
+        //Test if the number of items for the list view has increased by 1 due to new business
+        assertEquals(listCountBeforeDelete[0]-1, listCountAfterDelete[0]);
+    }
+
+    private static void getListLength(final int[] listLength) {
         onView(withId(R.id.lvList)).check(matches(new TypeSafeMatcher<View>() {
             @Override
             public boolean matchesSafely(View view) {
                 ListView listView = (ListView) view;
 
-                compareCounts[0] = listView.getCount();
+                listLength[0] = listView.getCount();
 
                 return true;
             }
@@ -203,9 +156,5 @@ public class CRUDInstrumentedTest {
 
             }
         }));
-
-
-        //Test if the number of items for the list view has increased by 1 due to new business
-        assertEquals(counts[0]-1, compareCounts[0]);
     }
 }
